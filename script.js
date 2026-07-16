@@ -1,0 +1,13 @@
+const menuButton=document.querySelector('.menu-toggle');
+const nav=document.querySelector('.main-nav');
+menuButton.addEventListener('click',()=>{const open=nav.classList.toggle('open');menuButton.setAttribute('aria-expanded',open)});
+document.querySelectorAll('.main-nav a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+const backTop=document.querySelector('.back-top');
+window.addEventListener('scroll',()=>{backTop.style.display=window.scrollY>500?'block':'none'});
+backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+const sections=[...document.querySelectorAll('main section[id]')];
+const links=[...document.querySelectorAll('.main-nav a:not(.nav-cta)')];
+window.addEventListener('scroll',()=>{let current='home';sections.forEach(s=>{if(window.scrollY>=s.offsetTop-160)current=s.id});links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+current))});
+document.getElementById('contactForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);const subject=encodeURIComponent('Website enquiry - '+f.get('service'));const body=encodeURIComponent(`Name: ${f.get('name')}\nEmail: ${f.get('email')}\nPhone: ${f.get('phone')}\nService: ${f.get('service')}\n\nProject details:\n${f.get('message')}`);window.location.href=`mailto:ertiezem@gmail.com?subject=${subject}&body=${body}`});
